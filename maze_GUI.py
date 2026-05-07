@@ -51,3 +51,28 @@ def draw_maze():
 
 
 draw_maze()
+
+# Wall remover
+
+def remove_wall(current, nxt):
+
+    r1, c1 = current
+    r2, c2 = nxt
+
+    dr = r2 - r1
+    dc = c2 - c1
+
+    if dr == -1:
+        northWall[r1][c1] = 0
+    elif dr == 1:
+        northWall[r2][c2] = 0
+    elif dc == 1:
+        eastWall[r1][c1 + 1] = 0
+    elif dc == -1:
+        eastWall[r1][c1] = 0
+
+
+# VALIDITY CHECKER FOR A CELL
+
+def valid(r, c):
+    return 0 <= r < ROWS and 0 <= c < COLS
