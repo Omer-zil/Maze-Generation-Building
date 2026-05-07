@@ -107,6 +107,31 @@ def generate_maze():
 
             remove_wall(current, nxt)
 
+            # BONUS FEATURE
+            # RANDOM EXTRA WALL REMOVAL
+            # Creates cycles / loops
+          
+            if random.randint(1, 20) == 1:
+
+                extra_dirs = [
+                    (-1, 0),
+                    (1, 0),
+                    (0, -1),
+                    (0, 1)
+                ]
+
+                random.shuffle(extra_dirs)
+
+                for dr, dc in extra_dirs:
+
+                    er = current[0] + dr
+                    ec = current[1] + dc
+
+                    if valid(er, ec):
+
+                        remove_wall(current, (er, ec))
+                        break
+
             nr, nc = nxt
             visited[nr][nc] = True
             stack.append(nxt)
