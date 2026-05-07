@@ -58,3 +58,9 @@ A random extra wall is removed with a 1 in 20 chance to create cycles in the maz
 ## How to Run
 
 python maze_GUI.py
+
+## Done By
+
+Omer Abubeker
+ID UGR/6702/16
+Section 2
