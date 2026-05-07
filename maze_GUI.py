@@ -237,6 +237,15 @@ def solve_maze(r, c, end_r, end_c):
 
 # START PROGRAM
 draw_maze()
+
 generate_maze()
+#intrance walls
+northWall[0][0] = 0
+#exit walls
+northWall[ROWS][COLS - 1] = 0
+
+draw_maze()
+
+solve_maze(0, 0, ROWS - 1, COLS - 1)
 
 root.mainloop()
