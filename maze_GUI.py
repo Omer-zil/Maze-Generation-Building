@@ -1,9 +1,14 @@
 import tkinter as tk
+import random
+import time
 
+# SETTINGS
+DELAY = 0.03
 ROWS = 15
 COLS = 15
 CELL_SIZE = 35
 
+# WINDOW
 root = tk.Tk()
 root.title("Maze Generator and Solver")
 
@@ -13,16 +18,38 @@ canvas = tk.Canvas(
     height=ROWS * CELL_SIZE + 2,
     bg="white"
 )
-
 canvas.pack()
 
-# EMPTY STRUCTURES (NO LOGIC YET)
+# DATA STRUCTURES
 northWall = [[1 for _ in range(COLS)] for _ in range(ROWS + 1)]
 eastWall = [[1 for _ in range(COLS + 1)] for _ in range(ROWS)]
+visited = [[False for _ in range(COLS)] for _ in range(ROWS)]
 
-root.mainloop()
 
-# DRAW THE MAZE BASED ON THE WALL STRUCTURES
+# VALID CELL
+def valid(r, c):
+    return 0 <= r < ROWS and 0 <= c < COLS
+
+
+# REMOVE WALL
+def remove_wall(current, nxt):
+    r1, c1 = current
+    r2, c2 = nxt
+
+    dr = r2 - r1
+    dc = c2 - c1
+
+    if dr == -1:
+        northWall[r1][c1] = 0
+    elif dr == 1:
+        northWall[r2][c2] = 0
+    elif dc == 1:
+        eastWall[r1][c1 + 1] = 0
+    elif dc == -1:
+        eastWall[r1][c1] = 0
+
+
+# DRAW MAZE
 def draw_maze():
 
     canvas.delete("all")
@@ -50,29 +77,49 @@ def draw_maze():
     root.update()
 
 
+# DFS MAZE GENERATION
+def generate_maze():
+
+    stack = []
+    start = (0, 0)
+
+    stack.append(start)
+    visited[0][0] = True
+
+    while stack:
+
+        current = stack[-1]
+        r, c = current
+
+        neighbors = []
+        directions = [(-1,0),(1,0),(0,-1),(0,1)]
+
+        for dr, dc in directions:
+
+            nr, nc = r + dr, c + dc
+
+            if valid(nr, nc) and not visited[nr][nc]:
+                neighbors.append((nr, nc))
+
+        if neighbors:
+
+            nxt = random.choice(neighbors)
+
+            remove_wall(current, nxt)
+
+            nr, nc = nxt
+            visited[nr][nc] = True
+            stack.append(nxt)
+
+            draw_maze()
+            time.sleep(DELAY)
+
+        else:
+            stack.pop()
+
+
+# START PROGRAM
 draw_maze()
+generate_maze()
 
-# Wall remover
-
-def remove_wall(current, nxt):
-
-    r1, c1 = current
-    r2, c2 = nxt
-
-    dr = r2 - r1
-    dc = c2 - c1
-
-    if dr == -1:
-        northWall[r1][c1] = 0
-    elif dr == 1:
-        northWall[r2][c2] = 0
-    elif dc == 1:
-        eastWall[r1][c1 + 1] = 0
-    elif dc == -1:
-        eastWall[r1][c1] = 0
-
-
-# VALIDITY CHECKER FOR A CELL
-
-def valid(r, c):
-    return 0 <= r < ROWS and 0 <= c < COLS
+root.mainloop()
