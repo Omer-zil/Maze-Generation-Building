@@ -61,6 +61,6 @@ python maze_GUI.py
 
 ## Done By
 
-Omer Abubeker
-ID UGR/6702/16
+Omer Abubeker  /
+ID UGR/6702/16  /
 Section 2
